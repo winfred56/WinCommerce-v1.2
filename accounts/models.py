@@ -32,11 +32,17 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
     user_name = models.CharField(max_length=100, unique=True)
     full_name = models.CharField(max_length=200)
     about = models.TextField(blank=True)
+    phone = models.CharField(max_length=15)
     # Delivery details
     country = CountryField()
     address_line1 = models.CharField(max_length=70, blank=True)
     address_line2 = models.CharField(max_length=70, blank=True)
     city_town = models.CharField(max_length=100, blank=True)
+
+    # User Status
+    is_active = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+
     object = CustomUserManager()
 
     USERNAME_FIELD = 'email'
