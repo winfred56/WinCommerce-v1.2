@@ -6,7 +6,7 @@ from django.urls import reverse
 class Product(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    seller = models.ForeignKey(settings.AUTH_MODEL_USER, on_delete=models.CASCADE)
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     category = models.ForeignKey("Category", on_delete=models.CASCADE, blank=True, null=True)
     brand = models.CharField(max_length=100)
     discount_price = models.DecimalField(max_digits=8, decimal_places=2)
