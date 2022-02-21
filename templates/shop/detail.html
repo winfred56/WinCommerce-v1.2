@@ -34,7 +34,7 @@
                                 </select>
 
                             </div>
-                            <div class="col-6 text-end"><a href="{% url 'basket:add_to_cart' product.slug %}" type="button" class="btn btn-secondary btn-sm">Add to
+                            <div class="col-6 text-end"><a href="{{product.get_add_to_cart_url}}" type="button" class="btn btn-secondary btn-sm">Add to
                                     cart</a></div>
                             <div class="col-6 text-end"><a href="{% url 'basket:remove_from_cart' product.slug %}" type="button" class="btn btn-secondary btn-sm">Remove from cart
                             </a></div>

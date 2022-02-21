@@ -23,7 +23,7 @@ def add_to_cart(request, slug):
         ordered_date = timezone.now()
         cart = Cart.objects.create(user=request.user, ordered_date=ordered_date)
         cart.products.add(cart_item)
-    return redirect("shop:product_detail", kwargs={'slug': slug})
+    return redirect("shop:product_detail", slug=slug)
 
 
 def remove_from_cart(request, slug):

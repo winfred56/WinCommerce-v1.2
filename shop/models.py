@@ -24,6 +24,9 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('shop:product_detail', kwargs={'slug': self.slug})
 
+    def get_add_to_cart_url(self):
+        return reverse('basket:add_to_cart', kwargs={'slug': self.slug})
+
     def __str__(self):
         return self.name
 
