@@ -13,15 +13,8 @@ class RegistrationForm(forms.ModelForm):
         model = UserBase
         fields = ('user_name', 'email',)
 
-    def clean_user_name(self):
-        user_name = self.cleaned_data['user_name'].lower()
-        r = UserBase.objects.filter(user_name=user_name)
-        if r.exits():
-            raise ValueError('Username already exits')
-        return user_name
-
     def clean_password2(self):
         password1 = self.cleaned_data['password']
         password2 = self.cleaned_data['password2']
         if password1 != password2:
-            raise ValueError('Passwords do not match')
+            raise forms.ValidationError('Passwords do not match')
