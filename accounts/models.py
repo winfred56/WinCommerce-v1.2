@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
+from django.core.mail import send_mail
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 
@@ -51,6 +52,15 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'Accounts'
         verbose_name_plural = 'Accounts'
+
+    def email_user(self, subject, message):
+        send_mail(
+            subject,
+            message,
+            'wincommerce.com',
+            [self.email],
+            fail_silently=False,
+        )
 
     def __str__(self):
         return self.email
