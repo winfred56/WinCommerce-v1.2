@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import UserBase
 from django.contrib.auth import login, logout
 from django.template.loader import render_to_string
@@ -11,6 +11,8 @@ from .forms import RegistrationForm
 
 
 def register(request):
+    if request.user.is_authenticated:
+        return redirect('/')
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
@@ -29,7 +31,7 @@ def register(request):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user)
             })
-            user.email_user(subject=subject, message=message)
+            user.email_user(subject, message)
     else:
         form = RegistrationForm()
     return render(request, 'accounts/register.html', {'form': form})
