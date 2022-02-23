@@ -40,13 +40,13 @@ def register(request):
 def account_activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
-        user = UserBase.objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, user.DoesNotExist):
-        user = None
+        user = UserBase.object.get(pk=uid)
+    except():
+        pass
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
         login(request, user)
-        # return redirect('shop:home')
+        return redirect('shop:home')
     else:
-        return render(request, 'account/registration/activation_invalid.html')
+        return render(request, 'account/activation_invalid.html')
