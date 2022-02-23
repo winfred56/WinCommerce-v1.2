@@ -29,7 +29,7 @@ def register(request):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user)
             })
-            user.user_email(subject=subject, message=message)
+            user.email_user(subject=subject, message=message)
     else:
         form = RegistrationForm()
     return render(request, 'accounts/register.html', {'form': form})
