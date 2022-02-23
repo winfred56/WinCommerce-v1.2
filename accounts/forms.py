@@ -18,3 +18,14 @@ class RegistrationForm(forms.ModelForm):
         password2 = self.cleaned_data['password2']
         if password1 != password2:
             raise forms.ValidationError('Passwords do not match')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['user_name'].widget.attrs.update({
+            'class': 'form-control mb-3', 'placeholder': 'Username'})
+        self.fields['email'].widget.attrs.update({
+            'class': 'form-control mb-3', 'placeholder': 'Email', 'name': 'email', 'id': 'id_email'})
+        self.fields['password'].widget.attrs.update({
+            'class': 'form-control mb-3', 'placeholder': 'Password'})
+        self.fields['password2'].widget.attrs.update({
+            'class': 'form-control mb-3', 'placeholder': 'Repeat Password'})
