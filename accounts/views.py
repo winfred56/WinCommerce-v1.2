@@ -6,7 +6,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from .tokens import account_activation_token
-from .forms import RegistrationForm
+from .forms import RegistrationForm, EditDetailsForm
 
 
 def register(request):
@@ -53,3 +53,13 @@ def account_activate(request, uidb64, token):
 
 def dashboard(request):
     return render(request, 'accounts/dashboard.html')
+
+
+def edit_details(request):
+    if request.method == 'POST':
+        form = EditDetailsForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+    else:
+        form = EditDetailsForm(instance=request.user)
+    return render(request, 'accounts/edit_details.html', {'form': form})

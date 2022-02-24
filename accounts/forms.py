@@ -39,3 +39,21 @@ class LoginForm(AuthenticationForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={
         'class': 'form-control', 'placeholder': 'Password', 'id': 'login-pwd',
     }))
+
+
+class EditDetailsForm(forms.ModelForm):
+    user_name = forms.CharField(label='Username', min_length=4, max_length=50, widget=forms.TextInput(
+            attrs={'class': 'form-control mb-3', 'placeholder': 'Username', 'id': 'form-user_name'}))
+    full_name = forms.CharField(label='Full name', min_length=4, max_length=50, widget=forms.TextInput(
+            attrs={'class': 'form-control mb-3', 'placeholder': 'Full name', 'id': 'form-lastname'}))
+    email = forms.EmailField(label='Account email (can not be changed)', max_length=200, widget=forms.TextInput(
+            attrs={'class': 'form-control mb-3', 'placeholder': 'Email', 'id': 'form-email', 'readonly': 'readonly'}))
+
+    class Meta:
+        model = UserBase
+        fields = ('email', 'user_name', 'full_name',)
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['user_name'].required = True
+            self.fields['email'].required = True

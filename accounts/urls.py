@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from .forms import LoginForm
 from django.contrib.auth import views as auth_views
 
 app_name = 'accounts'
@@ -13,4 +12,5 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='/accounts/login/'), name='logout'),
 
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('edit_details/', views.edit_details, name='edit_details')
 ]
