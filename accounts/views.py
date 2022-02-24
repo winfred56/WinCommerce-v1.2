@@ -5,7 +5,6 @@ from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
-
 from .tokens import account_activation_token
 from .forms import RegistrationForm
 
@@ -50,3 +49,7 @@ def account_activate(request, uidb64, token):
         return redirect('shop:home')
     else:
         return render(request, 'account/activation_invalid.html')
+
+
+def dashboard(request):
+    return render(request, 'accounts/dashboard.html')
