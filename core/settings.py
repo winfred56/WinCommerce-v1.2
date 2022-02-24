@@ -128,5 +128,7 @@ MEDIA_ROOT = BASE_DIR/'pictures'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.UserBase'
 LOGIN_REDIRECT = '/'
+LOGIN_REDIRECT_URL = 'shop:home'
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
