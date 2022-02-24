@@ -7,6 +7,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from .tokens import account_activation_token
 from .forms import RegistrationForm, EditDetailsForm
+from django.contrib.auth.decorators import login_required
 
 
 def register(request):
@@ -51,10 +52,12 @@ def account_activate(request, uidb64, token):
         return render(request, 'account/activation_invalid.html')
 
 
+@login_required
 def dashboard(request):
     return render(request, 'accounts/dashboard.html')
 
 
+@login_required
 def edit_details(request):
     if request.method == 'POST':
         form = EditDetailsForm(request.POST, instance=request.user)
@@ -63,3 +66,12 @@ def edit_details(request):
     else:
         form = EditDetailsForm(instance=request.user)
     return render(request, 'accounts/edit_details.html', {'form': form})
+
+
+@login_required
+def delete_user(request):
+    user = UserBase.object.get(id=request.user.id)
+    user.is_active = False
+    user.save()
+    logout(request, user)
+    return redirect('accounts:delete_confirm')
