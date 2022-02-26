@@ -73,5 +73,6 @@ def delete_user(request):
     user = UserBase.object.get(id=request.user.id)
     user.is_active = False
     user.save()
-    logout(request, user)
+    logout(request)
+    user.delete()
     return redirect('accounts:delete_confirm')
