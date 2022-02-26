@@ -3,8 +3,10 @@ from shop.models import Product
 from .models import Cart, CartItem
 from django.utils import timezone
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
+@login_required()
 def add_to_cart(request, slug):
     # Get the product to be added to the cart
     product = get_object_or_404(Product, slug=slug)
@@ -30,6 +32,7 @@ def add_to_cart(request, slug):
     return redirect("shop:product_detail", slug=slug)
 
 
+@login_required()
 def remove_from_cart(request, slug):
     # Get the product to be added to the cart
     product = get_object_or_404(Product, slug=slug)
