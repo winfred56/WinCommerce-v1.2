@@ -1,7 +1,6 @@
 from django import forms
 from .models import UserBase
-from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
-
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm
 
 class RegistrationForm(forms.ModelForm):
     user_name = forms.CharField(min_length=4, max_length=50, label='Username', help_text='required')
@@ -69,3 +68,10 @@ class PwdResetForm(PasswordResetForm):
         if not check_email:
             raise forms.ValidationError('Enter a correct email address')
         return email
+
+
+class PwdResetConfirmForm(SetPasswordForm):
+    new_password1 = forms.CharField(label='New Password', widget=forms.PasswordInput(
+        attrs={'class': 'form-control mb-3', 'placeholder': 'New Password', 'id': 'new_password1'}))
+    new_password2 = forms.CharField(label='Repeat Password', widget=forms.PasswordInput(
+        attrs={'class': 'form-control mb-3', 'placeholder': 'Repeat Password', 'id': 'new_password2'}))
