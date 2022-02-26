@@ -50,3 +50,7 @@ def remove_from_cart(request, slug):
     else:
         return redirect("shop:product_detail", slug=slug)
 
+
+
+
+
