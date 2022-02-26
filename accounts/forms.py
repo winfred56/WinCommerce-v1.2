@@ -1,6 +1,6 @@
 from django import forms
 from .models import UserBase
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
 
 
 class RegistrationForm(forms.ModelForm):
@@ -57,3 +57,15 @@ class EditDetailsForm(forms.ModelForm):
             super().__init__(*args, **kwargs)
             self.fields['user_name'].required = True
             self.fields['email'].required = True
+
+
+class PwdResetForm(PasswordResetForm):
+    email = forms.EmailField(label='Email', widget=forms.TextInput(
+        attrs={'class': 'form-control mb-3', 'placeholder': 'Email', 'id': 'email'}))
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        check_email = UserBase.object.filter(email=email)
+        if not check_email:
+            raise forms.ValidationError('Enter a correct email address')
+        return email
