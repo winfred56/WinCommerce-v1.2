@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
-from .forms import PwdResetForm
+from .forms import PwdResetForm, PwdResetConfirmForm
 
 app_name = 'accounts'
 urlpatterns = [
@@ -24,12 +24,19 @@ urlpatterns = [
 
     # Password Reset
     path('password_reset/', auth_views.PasswordResetView.as_view(
-        template_name='accounts/password_reset',
+        template_name='accounts/password_reset.html',
         success_url='password_reset_email_confirm',
+        email_template_name='accounts/password_reset_email.html',
         form_class=PwdResetForm), name='password_reset'),
 
-    path('password_reset_confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
+    path('password_reset_confirm/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(
         template_name='accounts/password_reset_confirm.html',
-        success_url='password_reset_complete'), name='password_reset_confirm')
+        form_class=PwdResetConfirmForm,
+        success_url='password_reset_complete/'), name='password_reset_confirm'),
+
+    path('password_reset/password_reset_email_confirm/', TemplateView.as_view(template_name='accounts/reset.html'),
+         name='password_reset_done'),
+    path('password_reset_confirm/MTc/password_reset_complete/', TemplateView.as_view(
+        template_name='accounts/reset.html'), name='password_reset_complete'),
 
 ]
