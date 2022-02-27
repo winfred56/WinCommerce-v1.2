@@ -1,9 +1,10 @@
-from django.shortcuts import get_object_or_404, redirect
-from shop.models import Product
-from .models import Cart, CartItem
-from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
+
+from shop.models import Product
+from .models import Cart, CartItem
 
 
 @login_required()
@@ -21,6 +22,7 @@ def add_to_cart(request, slug):
             cart_item.quantity += 1
             cart_item.save()
             messages.info(request, "Product successfully updated in cart")
+            return redirect("basket:cart")
         else:
             messages.info(request, "Product successfully added to cart")
             cart.products.add(cart_item)
@@ -29,7 +31,7 @@ def add_to_cart(request, slug):
         cart = Cart.objects.create(user=request.user, ordered_date=ordered_date)
         cart.products.add(cart_item)
         messages.info(request, "Product successfully added to cart")
-    return redirect("shop:product_detail", slug=slug)
+    return redirect("basket:cart")
 
 
 @login_required()
@@ -51,6 +53,32 @@ def remove_from_cart(request, slug):
         return redirect("shop:product_detail", slug=slug)
 
 
+@login_required()
+def remove_single_item_from_cart(request, slug):
+    # Get the product to be added to the cart
+    product = get_object_or_404(Product, slug=slug)
+    cart_ = Cart.objects.filter(user=request.user, ordered=False)
+    if cart_.exists():
+        cart = cart_[0]
+        if cart.products.filter(product__slug=product.slug).exists():
+            cart_item = CartItem.objects.filter(product=product, user=request.user, ordered=False)[0]
+            if cart_item.quantity < 1:
+                cart.products.remove(cart_item)
+                cart_item.save()
+                return redirect("/")
+            else:
+                cart_item.quantity -= 1
+                cart_item.save()
+                return redirect("basket:cart")
+        else:
+            messages.info(request, "Product not in cart")
+            return redirect("basket:cart")
+    else:
+        return redirect("basket:cart")
 
 
-
+@login_required
+def cart(request):
+    basket = CartItem.objects.all().filter(user=request.user, ordered=False)
+    context = {'basket': basket}
+    return render(request, 'shop/cart.html', context)
