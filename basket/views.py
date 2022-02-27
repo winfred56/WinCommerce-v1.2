@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
@@ -17,6 +18,7 @@ def add_to_cart(request, slug):
     cart_ = Cart.objects.filter(user=request.user, ordered=False)
     # If there are any incomplete orders for the current logged-in user:
     if cart_.exists():
+        print(created)
         cart = cart_[0]
         if cart.products.filter(product__slug=product.slug).exists():
             cart_item.quantity += 1
@@ -32,6 +34,40 @@ def add_to_cart(request, slug):
         cart.products.add(cart_item)
         messages.info(request, "Product successfully added to cart")
     return redirect("basket:cart")
+
+
+# get cartItem for specific user
+# get cart for the specific user
+# we make sure cartItem exits in users cart
+# we make sure cartItem isnt ordered
+# we remove cartItem from cart
+
+
+@login_required()
+def remove_cart_item(request, slug):
+    # gets cart_item
+    _cart_item_to_remove = get_object_or_404(CartItem, product__slug=slug)
+
+    # gets cart for specific user
+    _cart = Cart.objects.filter(user=request.user, ordered=False, products__ordered=False)
+
+    if _cart.exists():
+
+        # gets the most recent cart queryset
+        recent_cart = _cart[0]
+
+        # removes cart_item from recent cart
+        recent_cart.products.remove(_cart_item_to_remove)
+
+        # deletes cart_item
+        CartItem.delete(_cart_item_to_remove)
+
+        # deletes cart if no cart_item exits
+        if recent_cart.products.count() == 0:
+            Cart.delete(recent_cart)
+
+        return redirect('/')
+    return HttpResponse('Fuck off')
 
 
 @login_required()
