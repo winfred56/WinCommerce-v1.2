@@ -9,7 +9,7 @@
       <h1 class="h2">Your Basket</h1>
     </div>
     <div class="col-12">
-      <p>Manage your <b>items</b> in your basket</p>
+      <p>Manage <b>items</b> in your basket</p>
     </div>
     <hr />
   </div>
@@ -40,6 +40,20 @@
 
 
         {% for item in basket %}
+        {% if item.quantity == 0 %}
+        <div class="card mb-3 border-0 product-item">
+          <div class="row g-0">
+
+            <div class="col-md-10 ps-md-3">
+              <div class="card-body p-1">
+                <a class="text-decoration-none text-reset">
+                  <p class="card-text pb-3"></p>
+                </a
+              </div>
+            </div>
+          </div>
+        </div>
+        {% else %}
         <div class="card mb-3 border-0 product-item">
           <div class="row g-0">
             <div class="col-md-2 d-none d-md-block">
@@ -59,6 +73,7 @@
             </div>
           </div>
         </div>
+        {% endif %}
         {% endfor %}
 
 
