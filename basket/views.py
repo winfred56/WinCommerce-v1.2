@@ -55,11 +55,11 @@ def remove_cart_item(request, slug):
 
         # gets the most recent cart queryset
         recent_cart = _cart[0]
-
-        # removes cart_item from recent cart
+re        # removes cart_item from recent cart
         recent_cart.products.remove(_cart_item_to_remove)
 
         # deletes cart_item
+
         CartItem.delete(_cart_item_to_remove)
 
         # deletes cart if no cart_item exits
@@ -67,26 +67,7 @@ def remove_cart_item(request, slug):
             Cart.delete(recent_cart)
 
         return redirect('/')
-    return HttpResponse('Fuck off')
-
-
-@login_required()
-def remove_single_item_from_cart(request, slug):
-    # Get the product to be added to the cart
-    product = get_object_or_404(Product, slug=slug)
-    cart_ = Cart.objects.filter(user=request.user, ordered=False)
-    if cart_.exists():
-        cart = cart_[0]
-        if cart.products.filter(product__slug=product.slug).exists():
-            cart_item = CartItem.objects.filter(product=product, user=request.user, ordered=False)[0]
-            cart_item.quantity -= 1
-            cart_item.save()
-            return redirect("basket:cart")
-        else:
-            messages.info(request, "Product not in cart")
-            return redirect("basket:cart")
-    else:
-        return redirect("basket:cart")
+    return HttpResponse('Hello world!')
 
 
 @login_required
