@@ -55,7 +55,7 @@ def remove_cart_item(request, slug):
 
         # gets the most recent cart queryset
         recent_cart = _cart[0]
-re        # removes cart_item from recent cart
+      # removes cart_item from recent cart
         recent_cart.products.remove(_cart_item_to_remove)
 
         # deletes cart_item
