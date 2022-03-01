@@ -73,5 +73,8 @@ def remove_cart_item(request, slug):
 def cart(request):
     basket = CartItem.objects.all().filter(user=request.user, ordered=False)
 
-    context = {'basket': basket}
+    context = {
+        'basket': basket,
+        'cart': Cart.objects.all()
+    }
     return render(request, 'shop/cart.html', context)
