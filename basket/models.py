@@ -17,7 +17,6 @@ class Cart(models.Model):
         total = 0
         for item in self.products.all():
             total = total + item.get_total_price()
-            print(total)
         return total
 
 

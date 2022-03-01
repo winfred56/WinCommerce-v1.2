@@ -42,7 +42,7 @@
                                     <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'basket:cart' %}">Cart({{ count }})</a>
+                                    <a class="nav-link" href="{% url 'basket:cart' %}">Cart({{ products_counter }})</a>
                                 </li>
                                 {% else %}
                                 <li class="nav-item">

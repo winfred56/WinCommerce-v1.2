@@ -18,6 +18,8 @@ def home(request):
 def categories_list(request, slug):
     category = Category.objects.get(slug=slug)
     products = Product.objects.filter(category=category)
+    print(products.count())
+
     context = {
         'category': category,
         'products': products
