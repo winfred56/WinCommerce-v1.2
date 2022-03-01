@@ -18,6 +18,7 @@ def add_to_cart(request, slug):
     # If there are any incomplete orders for the current logged-in user:
     if cart_.exists():
         cart = cart_[0]
+
         if cart.products.filter(product__slug=product.slug).exists():
             cart_item.quantity += 1
             cart_item.save()
