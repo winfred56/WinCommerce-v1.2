@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-
 from shop.models import Product
 from .models import Cart, CartItem
 
@@ -18,11 +17,11 @@ def add_to_cart(request, slug):
     cart_ = Cart.objects.filter(user=request.user, ordered=False)
     # If there are any incomplete orders for the current logged-in user:
     if cart_.exists():
-        print(created)
         cart = cart_[0]
         if cart.products.filter(product__slug=product.slug).exists():
             cart_item.quantity += 1
             cart_item.save()
+            print(cart.products.count())
             messages.info(request, "Product successfully updated in cart")
             return redirect("basket:cart")
         else:
@@ -39,9 +38,8 @@ def add_to_cart(request, slug):
 # get cartItem for specific user
 # get cart for the specific user
 # we make sure cartItem exits in users cart
-# we make sure cartItem isnt ordered
+# we make sure cartItem isn't ordered
 # we remove cartItem from cart
-
 
 @login_required()
 def remove_cart_item(request, slug):
