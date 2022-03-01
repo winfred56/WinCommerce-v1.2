@@ -10,7 +10,7 @@ def home(request):
     products = Product.objects.all()
     search = request.GET.get('search')
     if search != " " and search is not None:
-        products = Product.objects.filter(name__icontains=search)
+         products = Product.objects.filter(name__icontains=search)
     context = {'products': products}
     return render(request, 'shop/home.html', context)
 
