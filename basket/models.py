@@ -13,6 +13,13 @@ class Cart(models.Model):
     def __str__(self):
         return self.user.user_name
 
+    def get_order_total(self):
+        total = 0
+        for item in self.products.all():
+            total = total + item.get_total_price()
+            print(total)
+        return total
+
 
 class CartItem(models.Model):
     user = models.ForeignKey(UserBase, on_delete=models.CASCADE)
