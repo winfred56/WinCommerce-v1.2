@@ -88,21 +88,19 @@
 
                     <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
                         <div class="d-grid gap-2 ">
-                            <a role="button" href="#" class="btn btn-success fw-bold" type="button">Checkout</a>
+                            <a role="button" href="{% url 'basket:checkout' %}" class="btn btn-success fw-bold" type="button">Checkout</a>
                             <button class="btn btn-light" type="button">Save for later</button>
                         </div>
                     </div>
                     <div class="text-end">
 
-                        <div class="">Sub Total: <span class="fw-bold">£</span>
-                            <div id="subtotal" class="d-inline-flex fw-bold">{{ basket.get_total }}</div>
-                        </div>
-                        <div id="">Shipping <span class="small">(Next day delivery)</span>: <span
+                        <div id="">Shipping <span class="small"></span>: <span
                                 class="fw-bold">£11.50</span></div>
-                        <div class="pt-2">Total to pay: <span class="fw-bold h5">£</span><span id="total"
+                        {% for k in cart %}
+                        <div class="pt-2">Total to pay: <span class="fw-bold h5">$ {{ k.get_order_total }}</span><span id="total"
                                                                                                class="fw-bold h5"></span>
                         </div>
-
+                        {% endfor %}
                     </div>
 
                 </div>
