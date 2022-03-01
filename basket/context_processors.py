@@ -6,5 +6,4 @@ def counter(request):
         cart = cart_[0]
         if cart.products.exists():
             up = cart.products.count()
-            print(up)
             return {'count': up}
