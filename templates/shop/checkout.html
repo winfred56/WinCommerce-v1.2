@@ -18,6 +18,7 @@
     border-color: #1497ff;
     box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.075), 0 0 0px rgba(255, 0, 0, 0.6);
   }
+<script src="https://js.paystack.co/v1/inline.js"></script>
 </style>
 
 <div class="container-fluid">
@@ -41,14 +42,14 @@
                   </div>
                   <div class="col-12">
                     <label for="email" class="form-label">Email <span class="text-muted">(Optional)</span></label>
-                    <input type="email" class="form-control" placeholder="you@example.com">
+                    <input type="email" class="form-control" id="email" placeholder="you@example.com">
                     <div class="invalid-feedback">
                       Please enter a valid email address for shipping updates.
                     </div>
                   </div>
                   <div class="col-12">
                     <label for="address" class="form-label">Address</label>
-                    <input type="text" class="form-control"  placeholder="1234 Main St" required>
+                    <input type="text" class="form-control" id="address1" placeholder="1234 Main St" required>
                     <div class="invalid-feedback">
                       Please enter your shipping address.
                     </div>
@@ -56,33 +57,33 @@
                   <div class="col-12">
                     <label for="address2" class="form-label">Address 2 <span
                         class="text-muted">(Optional)</span></label>
-                    <input type="text" class="form-control" placeholder="Apartment or suite">
+                    <input type="text" id="address2" class="form-control" placeholder="Apartment or suite">
                   </div>
                   <div class="col-md-5">
                     <label for="country" class="form-label">Country</label>
                     <select class="form-select" required>
                       <option value="">Choose...</option>
-                      <option>United States</option>
+                      <option>Ghana</option>
                     </select>
                     <div class="invalid-feedback">
                       Please select a valid country.
                     </div>
                   </div>
                   <div class="col-md-4">
-                    <label for="state" class="form-label">State</label>
+                    <label for="state" class="form-label">Region</label>
                     <select class="form-select" required>
                       <option value="">Choose...</option>
-                      <option>California</option>
+                      <option>Greater Accra</option>
                     </select>
                     <div class="invalid-feedback">
                       Please provide a valid state.
                     </div>
                   </div>
                   <div class="col-md-3">
-                    <label for="Postcode" class="form-label">Postcode</label>
+                    <label for="Postcode" class="form-label">Digital Address</label>
                     <input type="text" class="form-control" required>
                     <div class="invalid-feedback">
-                      Zip code required.
+                       Post GPS required.
                     </div>
                   </div>
                 </div>
@@ -92,8 +93,13 @@
                 <div id="card-element" class="form-control form-control-payment">
                   <!-- Payment elements will appear here -->
                 </div>
+                {% for k in cart %}
+                        <div class="pt-2">Total to pay: <span class="fw-bold h5">$ {{ k.get_order_total }}</span><span id="total"
+                                                                                               class="fw-bold h5"></span>
+                        </div>
+                        {% endfor %}
                 <hr class="my-4">
-                <button id="submit" class="btn btn-primary w-100 fw-bold">Pay</button>
+                <button id="submit" onclick="payWithPaystack()" class="btn btn-primary w-100 fw-bold">Pay</button>
               </form>
             </div>
           </div>
@@ -102,5 +108,49 @@
     </div>
   </div>
 </div>
+
+
+<script>
+const paymentForm = document.getElementById('paymentForm');
+
+paymentForm.addEventListener("submit", payWithPaystack, false);
+
+function payWithPaystack(e) {
+
+  e.preventDefault();
+
+  let handler = PaystackPop.setup({
+
+    key: 'pk_test_f462294c53eeee54576da82b852466f435be1574', // Replace with your public key
+
+    email: document.getElementById("email").value,
+
+    amount: document.getElementById("total").value * 100,
+
+    ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+
+    // label: "Optional string that replaces customer email"
+
+    onClose: function(){
+
+      alert('Window closed.');
+
+    },
+
+    callback: function(response){
+      window.location.href = "{% url 'basket:verify_payment' ref %};
+      {#let message = 'Payment complete! Reference: ' + response.reference;#}
+
+      alert(message);
+
+    }
+
+  });
+
+  handler.openIframe();
+
+}
+
+</script>
 
 {% endblock %}
