@@ -135,3 +135,7 @@ LOGIN_REDIRECT_URL = 'shop:home'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+import os
+
+public_key = os.environ.get('PUBLIC_KEY')
+private_key = os.environ.get('PRIVATE_KEY')
