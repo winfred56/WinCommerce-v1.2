@@ -77,3 +77,10 @@ def cart(request):
         'cart': Cart.objects.all()
     }
     return render(request, 'shop/cart.html', context)
+
+@login_required()
+def checkout(request):
+    context = {
+        'cart': Cart.objects.all()
+    }
+    return render(request, 'shop/checkout.html', context)
